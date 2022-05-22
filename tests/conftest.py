@@ -16,7 +16,7 @@ def dataset_path():
 
 
 @pytest.fixture()
-def target_col():
+def target_col() -> str:
     return "condition"
 
 
@@ -28,11 +28,6 @@ def categorical_features() -> List[str]:
 @pytest.fixture
 def numerical_features() -> List[str]:
     return DEFAULT_NUMERICAL_FEATURES
-
-
-@pytest.fixture()
-def target_col() -> str:
-    return "condition"
 
 
 @pytest.fixture()
