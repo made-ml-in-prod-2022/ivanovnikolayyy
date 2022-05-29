@@ -9,10 +9,16 @@ from sklearn.pipeline import Pipeline
 
 from ml_project.data import read_data, split_train_val_data
 from ml_project.features import build_transformer, extract_features_and_target
-from ml_project.models import (build_classifier, evaluate_classifier,
-                               load_model, save_model)
-from ml_project.params.pipeline_params import (TrainingPipelineParams,
-                                               read_training_pipeline_params)
+from ml_project.models import (
+    build_classifier,
+    evaluate_classifier,
+    load_model,
+    save_model,
+)
+from ml_project.params.pipeline_params import (
+    TrainingPipelineParams,
+    read_training_pipeline_params,
+)
 
 TRAIN_CONFIG_PATH = "configs/train_config.yaml"
 

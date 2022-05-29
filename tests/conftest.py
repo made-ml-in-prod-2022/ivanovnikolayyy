@@ -6,9 +6,12 @@ from sklearn.pipeline import Pipeline
 
 from ml_project.features import build_transformer
 from ml_project.models import build_classifier
-from ml_project.params import (DEFAULT_CATEGORICAL_FEATURES,
-                               DEFAULT_NUMERICAL_FEATURES, ClassifierParams,
-                               FeatureParams)
+from ml_project.params import (
+    DEFAULT_CATEGORICAL_FEATURES,
+    DEFAULT_NUMERICAL_FEATURES,
+    ClassifierParams,
+    FeatureParams,
+)
 
 
 @pytest.fixture()
