@@ -5,12 +5,7 @@ import numpy as np
 import pandas as pd
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.linear_model import LogisticRegression
-from sklearn.metrics import (
-    accuracy_score,
-    f1_score,
-    precision_score,
-    recall_score,
-)
+from sklearn.metrics import accuracy_score, f1_score, precision_score, recall_score
 
 from ml_project.params.classifier_params import ClassifierParams
 
@@ -22,7 +17,9 @@ def build_classifier(train_params: ClassifierParams) -> SklearnClassifier:
         clf = RandomForestClassifier(
             n_estimators=100, random_state=train_params.random_state
         )
-        clf = RandomForestClassifier(n_estimators=100, random_state=train_params.random_state)
+        clf = RandomForestClassifier(
+            n_estimators=100, random_state=train_params.random_state
+        )
     elif train_params.model_type == "LogisticRegression":
         clf = LogisticRegression(max_iter=train_params.max_iter)
     else:

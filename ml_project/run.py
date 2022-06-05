@@ -37,7 +37,7 @@ def train_pipeline(training_pipeline_params: TrainingPipelineParams):
         logger.info(f"start train pipeline with params {training_pipeline_params}")
         data = read_data(training_pipeline_params.input_data_path)
         logger.info(f"data.shape is {data.shape}")
-        
+
         train_df, val_df = split_train_val_data(
             data, training_pipeline_params.splitting_params
         )
