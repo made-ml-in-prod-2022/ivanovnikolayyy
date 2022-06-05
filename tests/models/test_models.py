@@ -8,13 +8,16 @@ from sklearn.pipeline import Pipeline
 
 from ml_project.data import read_data
 from ml_project.features import extract_features_and_target
-from ml_project.models import save_model, load_model
+from ml_project.models import load_model, save_model
 from ml_project.params import FeatureParams
 
 
 @pytest.fixture
 def features_and_target(
-    dataset_path: str, categorical_features: List[str], numerical_features: List[str], target_col: str
+    dataset_path: str,
+    categorical_features: List[str],
+    numerical_features: List[str],
+    target_col: str,
 ) -> Tuple[pd.DataFrame, pd.Series]:
     data = read_data(dataset_path)
     params = FeatureParams(

@@ -10,7 +10,9 @@ def test_load_dataset(dataset_path: str, target_col: str):
 
 def test_split_dataset(dataset_path: str):
     val_size = 0.2
-    splitting_params = SplittingParams(random_state=123, val_size=val_size, stratify=["condition"])
+    splitting_params = SplittingParams(
+        random_state=123, val_size=val_size, stratify=["condition"]
+    )
     data = read_data(dataset_path)
     train, val = split_train_val_data(data, splitting_params)
     assert train.shape[0] > 10

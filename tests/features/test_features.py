@@ -24,7 +24,9 @@ def categorical_values_with_nan(categorical_values: List[str]) -> List[str]:
 
 
 @pytest.fixture
-def fake_categorical_data(categorical_feature: str, categorical_values_with_nan: List[str]) -> pd.DataFrame:
+def fake_categorical_data(
+    categorical_feature: str, categorical_values_with_nan: List[str]
+) -> pd.DataFrame:
     return pd.DataFrame({categorical_feature: categorical_values_with_nan})
 
 
@@ -37,7 +39,9 @@ def test_process_categorical_features(
 
 
 @pytest.fixture
-def feature_params(categorical_features: List[str], numerical_features: List[str], target_col: str) -> FeatureParams:
+def feature_params(
+    categorical_features: List[str], numerical_features: List[str], target_col: str
+) -> FeatureParams:
     params = FeatureParams(
         categorical_features=categorical_features,
         numerical_features=numerical_features,

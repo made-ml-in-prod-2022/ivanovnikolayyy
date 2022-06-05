@@ -31,13 +31,16 @@ app = typer.Typer()
 
 
 def train_pipeline(training_pipeline_params: TrainingPipelineParams):
-    logger.info(f"start mlflow experiment")
-    logger.info(f"mlflow experiment started")
+    logger.info("start mlflow experiment")
+    logger.info("mlflow experiment started")
     with mlflow.start_run():
         logger.info(f"start train pipeline with params {training_pipeline_params}")
         data = read_data(training_pipeline_params.input_data_path)
         logger.info(f"data.shape is {data.shape}")
-        train_df, val_df = split_train_val_data(data, training_pipeline_params.splitting_params)
+        
+        train_df, val_df = split_train_val_data(
+            data, training_pipeline_params.splitting_params
+        )
         logger.info(f"train_df.shape is {train_df.shape}")
         logger.info(f"val_df.shape is {val_df.shape}")
 
@@ -45,12 +48,18 @@ def train_pipeline(training_pipeline_params: TrainingPipelineParams):
         clf = build_classifier(training_pipeline_params.classifier_params)
         model = Pipeline([("transforms", transforms), ("clf", clf)])
 
-        train_features, train_target = extract_features_and_target(train_df, training_pipeline_params.feature_params)
+        train_features, train_target = extract_features_and_target(
+            train_df, training_pipeline_params.feature_params
+        )
+
         logger.info(f"train_features.shape is {train_features.shape}")
 
         model.fit(train_features, train_target)
 
-        val_features, val_target = extract_features_and_target(val_df, training_pipeline_params.feature_params)
+        val_features, val_target = extract_features_and_target(
+            val_df, training_pipeline_params.feature_params
+        )
+
         logger.info(f"val_features.shape is {val_features.shape}")
 
         predicts = model.predict(val_features)

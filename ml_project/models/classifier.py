@@ -19,6 +19,9 @@ SklearnClassifier = Union[RandomForestClassifier, LogisticRegression]
 
 def build_classifier(train_params: ClassifierParams) -> SklearnClassifier:
     if train_params.model_type == "RandomForestClassifier":
+        clf = RandomForestClassifier(
+            n_estimators=100, random_state=train_params.random_state
+        )
         clf = RandomForestClassifier(n_estimators=100, random_state=train_params.random_state)
     elif train_params.model_type == "LogisticRegression":
         clf = LogisticRegression(max_iter=train_params.max_iter)

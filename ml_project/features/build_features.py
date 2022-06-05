@@ -63,7 +63,9 @@ def build_transformer(params: FeatureParams) -> ColumnTransformer:
     return transformer
 
 
-def extract_features_and_target(df: pd.DataFrame, params: FeatureParams) -> Tuple[pd.DataFrame, pd.Series]:
+def extract_features_and_target(
+    df: pd.DataFrame, params: FeatureParams
+) -> Tuple[pd.DataFrame, pd.Series]:
     features = df.drop(columns=[params.target_col])
     target = df[params.target_col]
 
