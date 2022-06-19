@@ -1,5 +1,5 @@
 import pickle
-from typing import Any, Dict, Optional, Union
+from typing import Dict, Optional, Union
 
 import numpy as np
 import pandas as pd
@@ -14,9 +14,6 @@ SklearnClassifier = Union[RandomForestClassifier, LogisticRegression]
 
 def build_classifier(train_params: ClassifierParams) -> SklearnClassifier:
     if train_params.model_type == "RandomForestClassifier":
-        clf = RandomForestClassifier(
-            n_estimators=100, random_state=train_params.random_state
-        )
         clf = RandomForestClassifier(
             n_estimators=100, random_state=train_params.random_state
         )
@@ -37,13 +34,13 @@ def evaluate_classifier(predicts: np.ndarray, target: pd.Series) -> Dict[str, fl
     }
 
 
-def save_model(model, save_path: str) -> str:
+def save_model(model: SklearnClassifier, save_path: str) -> str:
     with open(save_path, "wb") as output_stream:
         pickle.dump(model, output_stream)
     return save_path
 
 
-def load_model(load_path: str) -> Optional[Any]:
+def load_model(load_path: str) -> Optional[SklearnClassifier]:
     with open(load_path, "rb") as input_stream:
         model = pickle.load(input_stream)
     return model
