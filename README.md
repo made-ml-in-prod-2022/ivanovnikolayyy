@@ -37,18 +37,28 @@ poetry run pytest tests/.
 
 ### install
 
+pull latest build
+
 ```
-docker build -t <docker_id>/<image_name>:<tag> ./
+docker pull ivanovnikolayyy/made_ml_in_prod:latest
+```
+
+or build your own docker image
+
+```
+docker build -t <docker_id>/<name>:<tag> .
 ```
 
 ### predict
 
+run app in docker container
+
 ```
-docker run -p 8000:8000 <docker_id>/<image_name>:<tag>
+docker run -p 8000:8000 <docker_id>/<name>:<tag>
 ```
 
 after application startup complete, in separate tab run
 
 ```
-poetry run python ml_project/make_request.py
+python ml_project/make_request.py
 ```
