@@ -8,7 +8,7 @@ COPY poetry.lock pyproject.toml /code/
 
 RUN poetry config virtualenvs.create false && poetry install --no-interaction --no-ansi
 
-COPY models/model.pkl ml_project/app.py /code/
+COPY images/airflow-validate/model.pkl ml_project/app.py /code/
 
 ENV PATH_TO_MODEL="/code/model.pkl"
 
