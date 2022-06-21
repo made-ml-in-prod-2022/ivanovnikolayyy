@@ -3,7 +3,6 @@ import os
 import click
 import numpy as np
 import pandas as pd
-
 from fake import build_fake_data
 
 
@@ -17,5 +16,5 @@ def download(reference_data_path: str, output_dir: str):
     targets.to_csv(os.path.join(output_dir, "targets.csv"), index=False)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     download()

@@ -1,10 +1,10 @@
 import os
 from datetime import timedelta
 
+import pendulum
 from airflow import DAG
 from airflow.providers.docker.operators.docker import DockerOperator
 from docker.types import Mount
-import pendulum
 
 default_args = {
     "owner": "ivanovnikolayyy",
@@ -17,7 +17,7 @@ with DAG(
     "docker",
     default_args=default_args,
     schedule_interval="@daily",
-    start_date=pendulum.datetime(2022, 6, 18, tz="Europe/Moscow")
+    start_date=pendulum.datetime(2022, 6, 18, tz="Europe/Moscow"),
 ) as dag:
     download = DockerOperator(
         image="airflow-download",
@@ -26,7 +26,13 @@ with DAG(
         task_id="docker-airflow-download",
         do_xcom_push=False,
         mount_tmp_dir=False,
-        mounts=[Mount(source="/Users/nikolai.ivanov/Documents/made/ivanovnikolayyy/data/", target="/data", type='bind')]
+        mounts=[
+            Mount(
+                source="/Users/nikolai.ivanov/Documents/made/ivanovnikolayyy/data/",
+                target="/data",
+                type="bind",
+            )
+        ],
     )
 
     split = DockerOperator(
@@ -35,7 +41,13 @@ with DAG(
         task_id="docker-airflow-split",
         do_xcom_push=False,
         mount_tmp_dir=False,
-        mounts=[Mount(source="/Users/nikolai.ivanov/Documents/made/ivanovnikolayyy/data/", target="/data", type='bind')]
+        mounts=[
+            Mount(
+                source="/Users/nikolai.ivanov/Documents/made/ivanovnikolayyy/data/",
+                target="/data",
+                type="bind",
+            )
+        ],
     )
 
     train = DockerOperator(
@@ -44,7 +56,13 @@ with DAG(
         task_id="docker-airflow-train",
         do_xcom_push=False,
         mount_tmp_dir=False,
-        mounts=[Mount(source="/Users/nikolai.ivanov/Documents/made/ivanovnikolayyy/data/", target="/data", type='bind')]
+        mounts=[
+            Mount(
+                source="/Users/nikolai.ivanov/Documents/made/ivanovnikolayyy/data/",
+                target="/data",
+                type="bind",
+            )
+        ],
     )
 
     validate = DockerOperator(
@@ -53,7 +71,13 @@ with DAG(
         task_id="docker-airflow-validate",
         do_xcom_push=False,
         mount_tmp_dir=False,
-        mounts=[Mount(source="/Users/nikolai.ivanov/Documents/made/ivanovnikolayyy/data/", target="/data", type='bind')]
+        mounts=[
+            Mount(
+                source="/Users/nikolai.ivanov/Documents/made/ivanovnikolayyy/data/",
+                target="/data",
+                type="bind",
+            )
+        ],
     )
 
     download >> split >> train >> validate

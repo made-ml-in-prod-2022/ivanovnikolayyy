@@ -1,11 +1,11 @@
-import os
 import json
+import os
+import pickle
 
 import click
-import pickle
 import pandas as pd
-from sklearn.pipeline import Pipeline
 from sklearn.metrics import classification_report
+from sklearn.pipeline import Pipeline
 
 TARGET = "condition"
 
