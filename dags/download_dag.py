@@ -16,7 +16,7 @@ with DAG(
     "download",
     default_args=default_args,
     schedule_interval="@daily",
-    start_date=pendulum.now(tz="Europe/Moscow").add(days=-3),
+    start_date=pendulum.now(tz="Europe/Moscow").add(days=-10),
     tags=["airflow"],
 ) as dag:
 

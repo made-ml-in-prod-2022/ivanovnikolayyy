@@ -3,7 +3,12 @@ from datetime import timedelta
 import pendulum
 from airflow import DAG
 from airflow.providers.docker.operators.docker import DockerOperator
+from airflow.models import Variable
 from docker.types import Mount
+
+MODEL_DIR = Variable.get("MODEL_DIR")
+INPUT_DIR = "/data/raw/{{ ds }}"
+OUTPUT_DIR = "/data/predicts/{{ ds }}"
 
 default_args = {
     "owner": "ivanovnikolayyy",
@@ -22,7 +27,7 @@ with DAG(
 
     predict = DockerOperator(
         image="airflow-predict",
-        command="--input-dir /data/raw/{{ ds }} --model-dir /data/models/{{ ds }} --output-dir /data/predicts/{{ ds }}",
+        command=f"--input-dir {INPUT_DIR} --model-dir {MODEL_DIR} --output-dir {OUTPUT_DIR}",
         task_id="docker-airflow-predict",
         do_xcom_push=False,
         mount_tmp_dir=False,

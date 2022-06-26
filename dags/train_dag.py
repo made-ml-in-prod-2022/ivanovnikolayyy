@@ -15,8 +15,8 @@ default_args = {
 with DAG(
     "train",
     default_args=default_args,
-    schedule_interval="@daily",
-    start_date=pendulum.now(tz="Europe/Moscow").add(days=-3),
+    schedule_interval="@weekly",
+    start_date=pendulum.now(tz="Europe/Moscow").add(days=-10),
     tags=["airflow"],
 ) as dag:
 
