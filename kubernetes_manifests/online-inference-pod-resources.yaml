@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: online-inference-requests-limits
+  labels:
+    app: online-inference
+spec:
+  containers:
+    - image: ivanovnikolayyy/made_ml_in_prod:latest
+      name: online-inference-requests-limits
+      resources:
+        requests:
+          memory: "64Mi"
+          cpu: "1"
+        limits:
+          memory: "128Mi"
+          cpu: "2"
+      ports:
+        - containerPort: 80
