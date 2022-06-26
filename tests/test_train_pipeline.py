@@ -2,8 +2,12 @@ import os
 from pathlib import Path
 from typing import List
 
-from ml_project.params import (ClassifierParams, FeatureParams,
-                               SplittingParams, TrainingPipelineParams)
+from ml_project.params import (
+    ClassifierParams,
+    FeatureParams,
+    SplittingParams,
+    TrainingPipelineParams,
+)
 from ml_project.run import train_pipeline
 
 

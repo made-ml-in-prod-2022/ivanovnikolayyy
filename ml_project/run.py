@@ -7,12 +7,18 @@ import numpy as np
 import typer
 from sklearn.pipeline import Pipeline
 
-from ml_project.classifiers import (evaluate_classifier, load_model,
-                                    make_classifier, save_model)
+from ml_project.classifiers import (
+    evaluate_classifier,
+    load_model,
+    make_classifier,
+    save_model,
+)
 from ml_project.data import read_data, split_train_test_data
 from ml_project.features import make_transformer
-from ml_project.params.pipeline_params import (TrainingPipelineParams,
-                                               read_training_pipeline_params)
+from ml_project.params.pipeline_params import (
+    TrainingPipelineParams,
+    read_training_pipeline_params,
+)
 
 TRAIN_CONFIG_PATH = "configs/train_config.yaml"
 

@@ -4,8 +4,7 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from ml_project.features import (make_categorical_pipeline,
-                                 make_numerical_pipeline)
+from ml_project.features import make_categorical_pipeline, make_numerical_pipeline
 
 
 @pytest.fixture()
