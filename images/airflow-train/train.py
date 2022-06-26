@@ -1,4 +1,5 @@
 import os
+from dataclasses import replace
 
 import click
 
@@ -7,11 +8,20 @@ from ml_project.params.pipeline_params import read_training_pipeline_params
 
 
 @click.command("train")
-@click.option("--input-dir")
+@click.option("--train-dataset-dir")
 @click.option("--output-dir")
-def train(input_dir: str, output_dir: str):
+def train(train_dataset_dir: str, output_dir: str):
     params = read_training_pipeline_params("train_config.yaml")
-    params.input_data_path = os.path.join(input_dir, "train.csv")
-    params.output_model_path = os.path.join(output_dir, "model.pkl")
-    params.metric_path = os.path.join(output_dir, "metrics.pkl")
+    params = replace(
+        params,
+        dataset_path=train_dataset_dir,
+        output_model_path=os.path.join(output_dir, params.output_model_path),
+        metric_path=os.path.join(output_dir, params.metric_path),
+    )
+
+    os.makedirs(output_dir, exist_ok=True)
     train_pipeline(params)
+
+
+if __name__ == "__main__":
+    train()

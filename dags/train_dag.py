@@ -1,4 +1,3 @@
-import os
 from datetime import timedelta
 
 import pendulum
@@ -14,30 +13,16 @@ default_args = {
 }
 
 with DAG(
-    "docker",
+    "train",
     default_args=default_args,
     schedule_interval="@daily",
-    start_date=pendulum.datetime(2022, 6, 18, tz="Europe/Moscow"),
+    start_date=pendulum.now(tz="Europe/Moscow").add(days=-3),
+    tags=["airflow"],
 ) as dag:
-    download = DockerOperator(
-        image="airflow-download",
-        command="--reference-data-path reference_data.csv --output-dir /data/raw/{{ ds }}",
-        network_mode="bridge",
-        task_id="docker-airflow-download",
-        do_xcom_push=False,
-        mount_tmp_dir=False,
-        mounts=[
-            Mount(
-                source="/Users/nikolai.ivanov/Documents/made/ivanovnikolayyy/data/",
-                target="/data",
-                type="bind",
-            )
-        ],
-    )
 
     split = DockerOperator(
         image="airflow-split",
-        command="--input-dir /data/raw/{{ ds }} --output-dir /data/train/{{ ds }}",
+        command="--input-dir /data/raw/{{ ds }} --output-dir /data/split/{{ ds }}",
         task_id="docker-airflow-split",
         do_xcom_push=False,
         mount_tmp_dir=False,
@@ -52,7 +37,7 @@ with DAG(
 
     train = DockerOperator(
         image="airflow-train",
-        command="--input-dir /data/train/{{ ds }} --output-dir /data/train/{{ ds }}",
+        command="--train-dataset-dir /data/split/{{ ds }}/train --output-dir /data/models/{{ ds }}",
         task_id="docker-airflow-train",
         do_xcom_push=False,
         mount_tmp_dir=False,
@@ -67,7 +52,9 @@ with DAG(
 
     validate = DockerOperator(
         image="airflow-validate",
-        command="--input-dir /data/train/{{ ds }} --output-dir /data/metrics/{{ ds }}",
+        command="--test-dataset-dir /data/split/{{ ds }}/test "
+        "--model-path /data/models/{{ ds }} "
+        "--output-dir /data/metrics/{{ ds }}",
         task_id="docker-airflow-validate",
         do_xcom_push=False,
         mount_tmp_dir=False,
@@ -80,4 +67,4 @@ with DAG(
         ],
     )
 
-    download >> split >> train >> validate
+    split >> train >> validate
