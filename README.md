@@ -62,3 +62,11 @@ after application startup complete, in separate tab run
 ```
 python ml_project/make_request.py
 ```
+
+### airflow
+
+```
+docker compose down -v
+docker compose up --build
+```
+
