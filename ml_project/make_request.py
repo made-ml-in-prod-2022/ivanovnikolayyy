@@ -2,12 +2,8 @@ import numpy as np
 import pandas as pd
 import requests
 
-TARGET_COL = "condition"
-
-
 if __name__ == "__main__":
-    data = pd.read_csv("data/train.csv", dtype=float)
-    data = data.drop(columns=[TARGET_COL])
+    data = pd.read_csv("data/data_train.csv", dtype=float)
     request_features = list(data.columns)
 
     for i in range(3):

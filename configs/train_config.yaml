@@ -1,11 +1,9 @@
-input_data_path: "data/train.csv"
-output_model_path: "models/model.pkl"
-metric_path: "models/metrics.json"
+dataset_path: "data/"
+output_model_path: "model.pkl"
+metric_path: "metrics.json"
 splitting_params:
   val_size: 0.1
   random_state: 42
-  stratify:
-    - "condition"
 classifier_params:
   model_type: "LogisticRegression"
   max_iter: 500
@@ -25,4 +23,3 @@ feature_params:
     - "chol"
     - "thalach"
     - "oldpeak"
-  target_col: "condition"

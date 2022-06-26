@@ -1,1 +1,2 @@
-from .build_features import build_transformer, extract_features_and_target
+from .make_features import (make_categorical_pipeline, make_numerical_pipeline,
+                            make_transformer)
