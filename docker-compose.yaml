@@ -83,6 +83,12 @@ services:
     image: airflow-download
     restart: "no"
 
+  eda:
+    build:
+      context: images/airflow-eda
+    image: airflow-eda
+    restart: "no"
+
   split:
     build:
       context: images/airflow-split

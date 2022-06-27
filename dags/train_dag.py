@@ -20,6 +20,21 @@ with DAG(
     tags=["airflow"],
 ) as dag:
 
+    eda = DockerOperator(
+        image="airflow-eda",
+        command="--input-dir /data/raw/{{ ds }} --output-dir /data/eda/{{ ds }}",
+        task_id="docker-airflow-eda",
+        do_xcom_push=False,
+        mount_tmp_dir=False,
+        mounts=[
+            Mount(
+                source="/Users/nikolai.ivanov/Documents/made/ivanovnikolayyy/data/",
+                target="/data",
+                type="bind",
+            )
+        ],
+    )
+
     split = DockerOperator(
         image="airflow-split",
         command="--input-dir /data/raw/{{ ds }} --output-dir /data/split/{{ ds }}",
@@ -67,4 +82,4 @@ with DAG(
         ],
     )
 
-    split >> train >> validate
+    eda >> split >> train >> validate
