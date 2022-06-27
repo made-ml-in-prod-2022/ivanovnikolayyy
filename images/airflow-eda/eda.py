@@ -1,5 +1,5 @@
-import os
 import json
+import os
 
 import click
 import pandas as pd
@@ -15,9 +15,9 @@ def eda(input_dir: str, output_dir: str):
     description = data.describe()
     counts = targets["targets"].value_counts().to_dict()
 
-    os.makedirs(os.path.join(output_dir, "eda"), exist_ok=True)
-    description.to_csv(os.path.join(output_dir, "eda/description.csv"))
-    with open(os.path.join(output_dir, "eda/description.csv"), "w") as f:
+    os.makedirs(output_dir, exist_ok=True)
+    description.to_csv(os.path.join(output_dir, "description.csv"))
+    with open(os.path.join(output_dir, "description.csv"), "w") as f:
         json.dump(counts, f)
 
 
