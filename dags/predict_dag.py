@@ -2,8 +2,8 @@ from datetime import timedelta
 
 import pendulum
 from airflow import DAG
-from airflow.providers.docker.operators.docker import DockerOperator
 from airflow.models import Variable
+from airflow.providers.docker.operators.docker import DockerOperator
 from docker.types import Mount
 
 MODEL_DIR = Variable.get("MODEL_DIR")
