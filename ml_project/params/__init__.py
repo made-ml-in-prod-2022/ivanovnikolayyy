@@ -1,9 +1,5 @@
 from .classifier_params import ClassifierParams
-from .feature_params import (
-    DEFAULT_CATEGORICAL_FEATURES,
-    DEFAULT_NUMERICAL_FEATURES,
-    FeatureParams,
-)
+from .feature_params import FeatureParams
 from .pipeline_params import (
     TrainingPipelineParams,
     TrainingPipelineParamsSchema,

@@ -3,11 +3,10 @@ import os
 import pickle
 
 import click
-import pandas as pd
-from sklearn.metrics import classification_report
 from sklearn.pipeline import Pipeline
 
-TARGET = "condition"
+from ml_project.classifiers import evaluate_classifier, load_model
+from ml_project.data import read_data
 
 
 def load_object(path: str) -> Pipeline:
@@ -16,18 +15,19 @@ def load_object(path: str) -> Pipeline:
 
 
 @click.command("predict")
-@click.option("--input-dir")
+@click.option("--model-path")
+@click.option("--test-dataset-dir")
 @click.option("--output-dir")
-def validate(input_dir: str, output_dir: str):
-    model = load_object(os.path.join(input_dir, "model.pkl"))
-    data = pd.read_csv(os.path.join(input_dir, "test.csv"))
+def validate(model_path: str, test_dataset_dir: str, output_dir: str):
+    model = load_model(os.path.join(model_path, "model.pkl"))
+    data_test, targets_test = read_data(test_dataset_dir)
 
-    predicts = model.predict(data)
-    metrics = classification_report(data[TARGET], predicts, output_dict=True)
+    predicts = model.predict(data_test)
+    metrics = evaluate_classifier(targets_test, predicts)
 
     os.makedirs(output_dir, exist_ok=True)
-    with open(os.path.join(output_dir, "metrics.json"), "w") as f:
-        json.dump(metrics, f)
+    with open(os.path.join(output_dir, "metrics.json"), "w") as metrics_path:
+        json.dump(metrics, metrics_path)
 
 
 if __name__ == "__main__":

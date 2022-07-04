@@ -1,44 +1,48 @@
 import os
-from typing import List
 
 import pytest
 from sklearn.pipeline import Pipeline
 
-from ml_project.features import build_transformer
-from ml_project.models import build_classifier
-from ml_project.params import (
-    DEFAULT_CATEGORICAL_FEATURES,
-    DEFAULT_NUMERICAL_FEATURES,
-    ClassifierParams,
-    FeatureParams,
-)
+from ml_project.classifiers import make_classifier
+from ml_project.features import make_transformer
+from ml_project.params import ClassifierParams, FeatureParams
+
+DEFAULT_NUMERICAL_FEATURES = ["age", "trestbps", "chol", "thalach", "oldpeak"]
+DEFAULT_CATEGORICAL_FEATURES = [
+    "sex",
+    "cp",
+    "fbs",
+    "restecg",
+    "exang",
+    "slope",
+    "ca",
+    "thal",
+]
 
 
 @pytest.fixture()
-def dataset_path():
-    curdir = os.path.dirname(__file__)
-    return os.path.join(curdir, "train_data_sample.csv")
-
-
-@pytest.fixture()
-def target_col() -> str:
-    return "condition"
-
-
-@pytest.fixture()
-def categorical_features() -> List[str]:
+def categorical_features():
     return DEFAULT_CATEGORICAL_FEATURES
 
 
-@pytest.fixture
-def numerical_features() -> List[str]:
+@pytest.fixture()
+def numerical_features():
     return DEFAULT_NUMERICAL_FEATURES
 
 
 @pytest.fixture()
-def model():
-    transforms = build_transformer(FeatureParams())
-    clf = build_classifier(ClassifierParams())
+def dataset_path():
+    return os.path.dirname(__file__)
+
+
+@pytest.fixture()
+def model(categorical_features, numerical_features):
+    feature_params = FeatureParams(
+        categorical_features=categorical_features,
+        numerical_features=numerical_features,
+    )
+    transforms = make_transformer(feature_params)
+    clf = make_classifier(ClassifierParams())
     model = Pipeline([("transforms", transforms), ("clf", clf)])
 
     return model

@@ -7,14 +7,14 @@ import numpy as np
 import typer
 from sklearn.pipeline import Pipeline
 
-from ml_project.data import read_data, split_train_val_data
-from ml_project.features import build_transformer, extract_features_and_target
-from ml_project.models import (
-    build_classifier,
+from ml_project.classifiers import (
     evaluate_classifier,
     load_model,
+    make_classifier,
     save_model,
 )
+from ml_project.data import read_data, split_train_test_data
+from ml_project.features import make_transformer
 from ml_project.params.pipeline_params import (
     TrainingPipelineParams,
     read_training_pipeline_params,
@@ -35,42 +35,33 @@ def train_pipeline(training_pipeline_params: TrainingPipelineParams):
     logger.info("mlflow experiment started")
     with mlflow.start_run():
         logger.info(f"start train pipeline with params {training_pipeline_params}")
-        data = read_data(training_pipeline_params.input_data_path)
+        data, targets = read_data(training_pipeline_params.dataset_path)
         logger.info(f"data.shape is {data.shape}")
 
-        train_df, val_df = split_train_val_data(
-            data, training_pipeline_params.splitting_params
+        data_train, data_test, targets_train, targets_test = split_train_test_data(
+            data, targets, training_pipeline_params.splitting_params
         )
-        logger.info(f"train_df.shape is {train_df.shape}")
-        logger.info(f"val_df.shape is {val_df.shape}")
+        logger.info(f"data_train.shape is {data_train.shape}")
+        logger.info(f"data_test.shape is {data_test.shape}")
 
-        transforms = build_transformer(training_pipeline_params.feature_params)
-        clf = build_classifier(training_pipeline_params.classifier_params)
+        transforms = make_transformer(training_pipeline_params.feature_params)
+        clf = make_classifier(training_pipeline_params.classifier_params)
         model = Pipeline([("transforms", transforms), ("clf", clf)])
 
-        train_features, train_target = extract_features_and_target(
-            train_df, training_pipeline_params.feature_params
-        )
+        logger.info("fitting model")
+        model.fit(data_train, targets_train)
 
-        logger.info(f"train_features.shape is {train_features.shape}")
+        logger.info("saving model")
+        path_to_model = save_model(model, training_pipeline_params.output_model_path)
 
-        model.fit(train_features, train_target)
-
-        val_features, val_target = extract_features_and_target(
-            val_df, training_pipeline_params.feature_params
-        )
-
-        logger.info(f"val_features.shape is {val_features.shape}")
-
-        predicts = model.predict(val_features)
-        metrics = evaluate_classifier(predicts, val_target)
+        logger.info("evaluating test metrics")
+        predicts = model.predict(data_test)
+        metrics = evaluate_classifier(targets_test, predicts)
         mlflow.log_metrics(metrics)
 
         with open(training_pipeline_params.metric_path, "w") as metric_file:
             json.dump(metrics, metric_file)
         logger.info(f"metrics is {metrics}")
-
-        path_to_model = save_model(model, training_pipeline_params.output_model_path)
 
         return path_to_model, metrics
 

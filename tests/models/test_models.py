@@ -6,35 +6,22 @@ import pandas as pd
 import pytest
 from sklearn.pipeline import Pipeline
 
+from ml_project.classifiers import load_model, save_model
 from ml_project.data import read_data
-from ml_project.features import extract_features_and_target
-from ml_project.models import load_model, save_model
-from ml_project.params import FeatureParams
 
 
 @pytest.fixture
-def features_and_target(
-    dataset_path: str,
-    categorical_features: List[str],
-    numerical_features: List[str],
-    target_col: str,
-) -> Tuple[pd.DataFrame, pd.Series]:
-    data = read_data(dataset_path)
-    params = FeatureParams(
-        categorical_features=categorical_features,
-        numerical_features=numerical_features,
-        target_col=target_col,
-    )
-    features, target = extract_features_and_target(data, params)
+def data_and_targets(dataset_path: str) -> Tuple[pd.DataFrame, pd.DataFrame]:
+    data, targets = read_data(dataset_path)
 
-    return features, target
+    return data, targets
 
 
-def test_train_model(model, features_and_target: Tuple[pd.DataFrame, pd.Series]):
-    features, target = features_and_target
-    model.fit(features, target)
+def test_train_model(model, data_and_targets: Tuple[pd.DataFrame, pd.Series]):
+    data, targets = data_and_targets
+    model.fit(data, targets)
 
-    assert model.predict(features).shape[0] == target.shape[0]
+    assert model.predict(data).shape[0] == targets.shape[0]
 
 
 def test_serialize_model(model, tmpdir: Path):

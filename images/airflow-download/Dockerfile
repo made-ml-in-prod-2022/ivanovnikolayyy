@@ -1,5 +1,5 @@
 FROM airflow-ml-base:latest
 
-COPY download.py fake.py reference_data.csv ./
+COPY download.py ./
 
 ENTRYPOINT ["python", "download.py"]

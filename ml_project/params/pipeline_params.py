@@ -10,7 +10,7 @@ from .split_params import SplittingParams
 
 @dataclass()
 class TrainingPipelineParams:
-    input_data_path: str
+    dataset_path: str
     output_model_path: str
     metric_path: str
     feature_params: FeatureParams

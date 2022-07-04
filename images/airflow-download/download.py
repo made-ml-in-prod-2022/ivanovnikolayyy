@@ -1,18 +1,15 @@
 import os
 
 import click
-import numpy as np
-import pandas as pd
-from fake import build_fake_data
+from sklearn.datasets import load_wine
 
 
 @click.command("download")
-@click.option("--reference-data-path")
 @click.option("--output-dir")
-def download(reference_data_path: str, output_dir: str):
-    data, targets = build_fake_data(reference_data_path)
+def download(output_dir: str):
+    data, targets = load_wine(return_X_y=True, as_frame=True)
     os.makedirs(output_dir, exist_ok=True)
-    data.to_csv(os.path.join(output_dir, "reference_data.csv"), index=False)
+    data.to_csv(os.path.join(output_dir, "data.csv"), index=False)
     targets.to_csv(os.path.join(output_dir, "targets.csv"), index=False)
 
 
